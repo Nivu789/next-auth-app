@@ -27,8 +27,13 @@ export default function Signup(){
             setLoading(true)
             const response = await axios.post("/api/signup",user)
             console.log("Response from backend",response)
-            toast.success(response.data.message)
-            router.push('/login')
+            if(response.data.error){
+                toast.error(response.data.error)
+            }else{
+                toast.success(response.data.message)
+                router.push('/login')
+            }
+            
         } catch (error:any) {
             toast.error(error)
         }finally{

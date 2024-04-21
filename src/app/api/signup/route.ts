@@ -2,8 +2,17 @@ import { NextRequest, NextResponse } from "next/server";
 import User from '../../../models/userModel'
 import bcrypt from 'bcryptjs'
 import { connect } from "../../../dbConfig/dbConfig";
+import {sendMail} from '../../../helper/sendEmail'
 
-connect();
+// connect();
+
+const run = async () => {
+    await connect();
+    console.log("Connected to myDB");
+  }
+  
+  run()
+  .catch((err) => console.error(err))
 
 export async function POST(request:NextRequest){
     try {
@@ -22,6 +31,8 @@ export async function POST(request:NextRequest){
             email,
             password:hashedPassword
         })
+
+        await sendMail(email)
 
         return NextResponse.json({message:"Account created successfully"})
     } catch (error) {
