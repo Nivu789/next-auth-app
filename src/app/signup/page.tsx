@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
+import { motion } from 'framer-motion'
 
 
 
@@ -22,7 +23,7 @@ export default function Signup(){
         e.preventDefault()
         try {
             if(user.username === "" || user.email === "" || user.password === ""){
-                alert("All fields must be filled out")
+                return toast.error("All fields must be filled out")
             } 
             setLoading(true)
             const response = await axios.post("/api/signup",user)
@@ -45,6 +46,7 @@ export default function Signup(){
     
     return (
         <>
+        <motion.div transition={{type:'spring'}} animate={{ scale: 1.1 }}>
         <form className='flex flex-col gap-4 items-center justify-center h-screen' onSubmit={(e) => e.preventDefault()}>
             <h1 className='text-center my-6 text-2xl'>Signup</h1>
             <div>
@@ -66,6 +68,7 @@ export default function Signup(){
             </div>
         <Link href="/login">click here to login</Link>
         </form>
+        </motion.div>
         </>
     )
 }

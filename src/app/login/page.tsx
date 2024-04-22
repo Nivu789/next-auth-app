@@ -1,10 +1,12 @@
 "use client"
 
+import { Button } from '@/components/ui/button'
 import axios from 'axios'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
+import { motion } from "framer-motion"
 
 
 
@@ -21,7 +23,7 @@ export default function Login(){
         try {
             setLoading(true)
             if(user.email === "" || user.password === ""){
-                alert("All fields must be filled out")
+                return toast.error("All fields must be filled out")
             }
             const response = await axios.post("/api/login",user) 
             console.log(response)
@@ -42,7 +44,8 @@ export default function Login(){
     
     return (
         <>
-        <form  onSubmit={e=>e.preventDefault()} className='flex flex-col gap-4 items-center justify-center h-screen'>
+        <motion.div transition={{type:'spring'}} animate={{ scale: 1.1 }}>
+            <form  onSubmit={e=>e.preventDefault()} className='flex flex-col gap-4 items-center justify-center h-screen'>
             <h1 className='text-center my-6 text-2xl'>Login</h1>
             
             <div>
@@ -56,10 +59,15 @@ export default function Login(){
             
             <div>
                 {loading ? <div className='animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white'></div> 
-                :<button type="submit" onClick={handleLogin} className='bg-slate-600 rounded-xl text-white p-2 hover:bg-white hover:text-black'>Login</button>}
+                :<motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+               type="submit" onClick={handleLogin} className='bg-slate-600 rounded-xl text-white p-2 hover:bg-white hover:text-black'>Login</motion.button>}
             </div>
         <Link href="/signup">click here to signup</Link>
         </form>
+        </motion.div>
+        
         </>
     )
 }
